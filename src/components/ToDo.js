@@ -34,15 +34,19 @@ const ToDo = () => {
     }
     const handleOnSumit = (e) => {
         e.preventDefault()
-        if (inputValue === "") {
+        if (inputValue.toDo === "") {
             const newMessage = { ...message }
-            newMessage.error = " ⚠️ Please write you ToDo"
+            newMessage.error = " ⚠️ Please write your ToDo"
             newMessage.success = ""
             setMessage(newMessage)
         } else {
             const newInputValue = { ...inputValue, id: new Date().getTime().toString(), line: false }
             const newItems = [...items, newInputValue]
             setItems(newItems)
+            const newMessage = { ...message }
+            newMessage.error = ""
+            newMessage.success = " 😍 List Added Successfully"
+            setMessage(newMessage)
             setInputValue((preValue) => {
                 return { ...preValue, toDo: "" }
             })
@@ -117,6 +121,7 @@ const ToDo = () => {
                 <form onSubmit={edit ? updateItem : handleOnSumit}>
                     <div className="input__group">
                         <input value={inputValue.toDo} onChange={handleOnchang} type="text" name="toDo" placeholder=" ✍️ Write ToDo....." />
+                        
                         {
                             edit ? <button className="add__item">
                                 <FontAwesomeIcon icon={faEdit} />
@@ -126,6 +131,7 @@ const ToDo = () => {
                         }
 
                     </div>
+                    <p className="message">{message.error} {message.success}</p>
                 </form>
                 <div className="items">
                     <ul>
@@ -137,7 +143,10 @@ const ToDo = () => {
                     </ul>
                 </div>
                 <div className="delete__all">
-                    <button onClick={deleteAllItem} className="btn">Delete All</button>
+                    {
+                        items.length !== 0 && <button onClick={deleteAllItem} className="btn">Delete All</button>
+                    }
+                   
                 </div>
             </div>
         </div>
